@@ -86,6 +86,7 @@ func CreateScheduler(
 	serviceInformer coreinformers.ServiceInformer,
 	recorder record.EventRecorder,
 ) (*scheduler.Scheduler, error) {
+	// 创建一个configurator
 	configurator := factory.NewConfigFactory(
 		s.SchedulerName,
 		kubecli,
@@ -99,7 +100,7 @@ func CreateScheduler(
 		serviceInformer,
 		s.HardPodAffinitySymmetricWeight,
 	)
-
+	// 创建schedulerconfigurator，使用上面创建的configurator来进行赋值
 	// Rebuild the configurator with a default Create(...) method.
 	configurator = &schedulerConfigurator{
 		configurator,
@@ -117,6 +118,7 @@ func CreateScheduler(
 
 // schedulerConfigurator is an interface wrapper that provides a way to create
 // a scheduler from a user provided config file or ConfigMap object.
+//
 type schedulerConfigurator struct {
 	scheduler.Configurator
 	policyFile               string
@@ -174,6 +176,7 @@ func (sc schedulerConfigurator) getSchedulerPolicyConfig() (*schedulerapi.Policy
 // Create implements the interface for the Configurator, hence it is exported
 // even though the struct is not.
 func (sc schedulerConfigurator) Create() (*scheduler.Config, error) {
+	// lgx 从配置文件中或者调度的策略
 	policy, err := sc.getSchedulerPolicyConfig()
 	if err != nil {
 		return nil, err
@@ -181,6 +184,7 @@ func (sc schedulerConfigurator) Create() (*scheduler.Config, error) {
 	// If no policy is found, create scheduler from algorithm provider.
 	if policy == nil {
 		if sc.Configurator != nil {
+			// lgx 使用默认的方式
 			return sc.Configurator.CreateFromProvider(sc.algorithmProvider)
 		}
 		return nil, fmt.Errorf("Configurator was nil")
