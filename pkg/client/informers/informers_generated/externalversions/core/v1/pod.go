@@ -60,6 +60,7 @@ func newPodInformer(client clientset.Interface, resyncPeriod time.Duration) cach
 }
 
 func (f *podInformer) Informer() cache.SharedIndexInformer {
+	//lgx k8s.io\kubernetes\pkg\client\informers\informers_generated\externalversions\factory.go
 	return f.factory.InformerFor(&core_v1.Pod{}, newPodInformer)
 }
 

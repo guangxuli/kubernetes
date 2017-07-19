@@ -107,17 +107,18 @@ func (cache *schedulerCache) List(selector labels.Selector) ([]*v1.Pod, error) {
 }
 
 func (cache *schedulerCache) AssumePod(pod *v1.Pod) error {
-	key, err := getPodKey(pod)
+	key, err := getPodKey(pod)// lgx print this
 	if err != nil {
 		return err
 	}
 
 	cache.mu.Lock()
 	defer cache.mu.Unlock()
+	// lgx 什么原因导致
 	if _, ok := cache.podStates[key]; ok {
 		return fmt.Errorf("pod %v state wasn't initial but get assumed", key)
 	}
-
+	// lgx 主要是在node结构中登录pods信息
 	cache.addPod(pod)
 	ps := &podState{
 		pod: pod,
@@ -140,7 +141,7 @@ func (cache *schedulerCache) finishBinding(pod *v1.Pod, now time.Time) error {
 
 	cache.mu.Lock()
 	defer cache.mu.Unlock()
-
+	// lgx 绑定ok后，才能对pod进行终止，因为这个deadline从现在开始计算
 	glog.V(5).Infof("Finished binding for pod %v. Can be expired.", key)
 	currState, ok := cache.podStates[key]
 	if ok && cache.assumedPods[key] {
@@ -161,6 +162,7 @@ func (cache *schedulerCache) ForgetPod(pod *v1.Pod) error {
 	defer cache.mu.Unlock()
 
 	currState, ok := cache.podStates[key]
+	// lgx 为什么出现这种情况? 这个在调度的时候应该返回的优选节点不是pod制定的nodename?
 	if ok && currState.pod.Spec.NodeName != pod.Spec.NodeName {
 		return fmt.Errorf("pod %v state was assumed on a different node", key)
 	}
@@ -202,10 +204,12 @@ func (cache *schedulerCache) updatePod(oldPod, newPod *v1.Pod) error {
 // Assumes that lock is already acquired.
 func (cache *schedulerCache) removePod(pod *v1.Pod) error {
 	n := cache.nodes[pod.Spec.NodeName]
+	// 从该pod所分配到的node上一处该pod信息
 	if err := n.removePod(pod); err != nil {
 		return err
 	}
 	if len(n.pods) == 0 && n.node == nil {
+		//如果该nodes已经不存在任何pod，那么从cache node列表中删除该node信息
 		delete(cache.nodes, pod.Spec.NodeName)
 	}
 	return nil

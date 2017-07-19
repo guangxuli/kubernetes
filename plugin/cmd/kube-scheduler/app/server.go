@@ -76,7 +76,7 @@ func Run(s *options.SchedulerServer) error {
 	// cache only non-terminal pods
 	podInformer := factory.NewPodInformer(kubecli, 0)
 
-	sched, err := CreateScheduler(
+	sched, err := errCreateScheduler(
 		s,
 		kubecli,
 		informerFactory.Core().V1().Nodes(),

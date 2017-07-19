@@ -257,6 +257,7 @@ func (sched *Scheduler) scheduleOne() {
 	// Synchronously attempt to find a fit for the pod.
 	start := time.Now()
 	// lgx 正常会返回一个建议驻留的node节点信息
+	// schedule为调度算法 预选与优选
 	suggestedHost, err := sched.schedule(pod)
 	metrics.SchedulingAlgorithmLatency.Observe(metrics.SinceInMicroseconds(start))
 	if err != nil {

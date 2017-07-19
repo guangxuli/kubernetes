@@ -184,7 +184,7 @@ func (sc schedulerConfigurator) Create() (*scheduler.Config, error) {
 	// If no policy is found, create scheduler from algorithm provider.
 	if policy == nil {
 		if sc.Configurator != nil {
-			// lgx 使用默认的方式
+			// lgx 使用已注册的的方式
 			return sc.Configurator.CreateFromProvider(sc.algorithmProvider)
 		}
 		return nil, fmt.Errorf("Configurator was nil")

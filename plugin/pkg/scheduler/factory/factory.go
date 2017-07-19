@@ -117,8 +117,11 @@ func NewConfigFactory(
 	hardPodAffinitySymmetricWeight int,
 ) scheduler.Configurator {
 	stopEverything := make(chan struct{})
+	// lgx 这个New比较特别，函数内部新创建的schedulercache已经在后台运行了， 运行的主要是一个检查assumepod过期的携程
+	// 去除那些超期的assumepod
 	schedulerCache := schedulercache.New(30*time.Second, stopEverything)
 
+	// lgx schedulerCache 与 ConfigFactory的共同引用stopEverything通道
 	c := &ConfigFactory{
 		client:                         client,
 		podLister:                      schedulerCache,
@@ -158,6 +161,7 @@ func NewConfigFactory(
 	// unscheduled pod queue
 	podInformer.Informer().AddEventHandler(
 		cache.FilteringResourceEventHandler{
+			// 过滤pod的函数, 判断该pod是否被调度，未被调度返回false
 			FilterFunc: func(obj interface{}) bool {
 				switch t := obj.(type) {
 				case *v1.Pod:
@@ -425,13 +429,14 @@ func (f *ConfigFactory) CreateFromKeys(predicateKeys, priorityKeys sets.String, 
 	}
 
 	// TODO(resouer) use equivalence cache instead of nil here when #36238 get merged
+	// lgx 返回genericScheduler，该对象实现了Scheduler接口
 	algo := core.NewGenericScheduler(f.schedulerCache, nil, predicateFuncs, predicateMetaProducer, priorityConfigs, priorityMetaProducer, extenders)
 	podBackoff := util.CreateDefaultPodBackoff()
 	return &scheduler.Config{
 		SchedulerCache: f.schedulerCache,
 		// The scheduler only needs to consider schedulable nodes.
 		NodeLister:          &nodePredicateLister{f.nodeLister},
-		Algorithm:           algo,
+		Algorithm:           algo, //lgx
 		Binder:              f.getBinder(extenders),
 		PodConditionUpdater: &podConditionUpdater{f.client},
 		WaitForCacheSync: func() bool {

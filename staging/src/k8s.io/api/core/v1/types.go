@@ -2000,6 +2000,7 @@ const (
 	// PodRunning means the pod has been bound to a node and all of the containers have been started.
 	// At least one container is still running or is in the process of being restarted.
 	PodRunning PodPhase = "Running"
+	// succees 与 failed是结束态
 	// PodSucceeded means that all containers in the pod have voluntarily terminated
 	// with a container exit code of 0, and the system is not going to restart any of these containers.
 	PodSucceeded PodPhase = "Succeeded"
