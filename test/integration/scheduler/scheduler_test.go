@@ -43,13 +43,13 @@ import (
 	"k8s.io/client-go/tools/record"
 	"k8s.io/kubernetes/pkg/api/legacyscheme"
 	"k8s.io/kubernetes/pkg/api/testapi"
-	"k8s.io/kubernetes/pkg/apis/componentconfig"
 	"k8s.io/kubernetes/pkg/features"
 	schedulerapp "k8s.io/kubernetes/plugin/cmd/kube-scheduler/app"
 	"k8s.io/kubernetes/plugin/pkg/scheduler"
 	"k8s.io/kubernetes/plugin/pkg/scheduler/algorithm"
 	_ "k8s.io/kubernetes/plugin/pkg/scheduler/algorithmprovider"
 	schedulerapi "k8s.io/kubernetes/plugin/pkg/scheduler/api"
+	"k8s.io/kubernetes/plugin/pkg/scheduler/apis/schedulerconfig"
 	"k8s.io/kubernetes/plugin/pkg/scheduler/core"
 	"k8s.io/kubernetes/plugin/pkg/scheduler/factory"
 	"k8s.io/kubernetes/plugin/pkg/scheduler/schedulercache"
@@ -107,7 +107,7 @@ func TestSchedulerCreationFromConfigMap(t *testing.T) {
 	policyConfigMap := v1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{Namespace: metav1.NamespaceSystem, Name: configPolicyName},
 		Data: map[string]string{
-			componentconfig.SchedulerPolicyConfigMapKey: `{
+			schedulerconfig.SchedulerPolicyConfigMapKey: `{
 			"kind" : "Policy",
 			"apiVersion" : "v1",
 			"predicates" : [
@@ -130,9 +130,9 @@ func TestSchedulerCreationFromConfigMap(t *testing.T) {
 
 	ss := &schedulerapp.SchedulerServer{
 		SchedulerName: v1.DefaultSchedulerName,
-		AlgorithmSource: componentconfig.SchedulerAlgorithmSource{
-			Policy: &componentconfig.SchedulerPolicySource{
-				ConfigMap: &componentconfig.SchedulerPolicyConfigMapSource{
+		AlgorithmSource: schedulerconfig.SchedulerAlgorithmSource{
+			Policy: &schedulerconfig.SchedulerPolicySource{
+				ConfigMap: &schedulerconfig.SchedulerPolicyConfigMapSource{
 					Namespace: policyConfigMap.Namespace,
 					Name:      policyConfigMap.Name,
 				},
@@ -187,9 +187,9 @@ func TestSchedulerCreationFromNonExistentConfigMap(t *testing.T) {
 
 	ss := &schedulerapp.SchedulerServer{
 		SchedulerName: v1.DefaultSchedulerName,
-		AlgorithmSource: componentconfig.SchedulerAlgorithmSource{
-			Policy: &componentconfig.SchedulerPolicySource{
-				ConfigMap: &componentconfig.SchedulerPolicyConfigMapSource{
+		AlgorithmSource: schedulerconfig.SchedulerAlgorithmSource{
+			Policy: &schedulerconfig.SchedulerPolicySource{
+				ConfigMap: &schedulerconfig.SchedulerPolicyConfigMapSource{
 					Namespace: "non-existent-config",
 					Name:      "non-existent-config",
 				},

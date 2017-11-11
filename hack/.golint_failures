@@ -426,6 +426,8 @@ plugin/pkg/scheduler/algorithm/priorities/util
 plugin/pkg/scheduler/api
 plugin/pkg/scheduler/api/latest
 plugin/pkg/scheduler/api/v1
+plugin/pkg/scheduler/apis/schedulerconfig
+plugin/pkg/scheduler/apis/schedulerconfig/v1alpha1
 plugin/pkg/scheduler/core
 plugin/pkg/scheduler/factory
 plugin/pkg/scheduler/metrics
