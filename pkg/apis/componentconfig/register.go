@@ -44,8 +44,6 @@ func Resource(resource string) schema.GroupResource {
 
 func addKnownTypes(scheme *runtime.Scheme) error {
 	// TODO this will get cleaned up with the scheme types are fixed
-	scheme.AddKnownTypes(SchemeGroupVersion,
-		&KubeSchedulerConfiguration{},
-	)
+	scheme.AddKnownTypes(SchemeGroupVersion)
 	return nil
 }
