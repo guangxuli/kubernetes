@@ -23,7 +23,6 @@ go_test(
     deps = [
         "//pkg/api/legacyscheme:go_default_library",
         "//pkg/api/testapi:go_default_library",
-        "//pkg/apis/componentconfig:go_default_library",
         "//pkg/client/clientset_generated/internalclientset:go_default_library",
         "//pkg/client/informers/informers_generated/internalversion:go_default_library",
         "//pkg/controller/node:go_default_library",
@@ -37,6 +36,7 @@ go_test(
         "//plugin/pkg/scheduler/algorithm:go_default_library",
         "//plugin/pkg/scheduler/algorithmprovider:go_default_library",
         "//plugin/pkg/scheduler/api:go_default_library",
+        "//plugin/pkg/scheduler/apis/schedulerconfig:go_default_library",
         "//plugin/pkg/scheduler/core:go_default_library",
         "//plugin/pkg/scheduler/factory:go_default_library",
         "//plugin/pkg/scheduler/schedulercache:go_default_library",

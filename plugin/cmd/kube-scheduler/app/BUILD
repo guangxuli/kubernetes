@@ -11,8 +11,6 @@ go_library(
     importpath = "k8s.io/kubernetes/plugin/cmd/kube-scheduler/app",
     deps = [
         "//pkg/api/legacyscheme:go_default_library",
-        "//pkg/apis/componentconfig:go_default_library",
-        "//pkg/apis/componentconfig/v1alpha1:go_default_library",
         "//pkg/client/leaderelectionconfig:go_default_library",
         "//pkg/controller:go_default_library",
         "//pkg/features:go_default_library",
@@ -25,6 +23,8 @@ go_library(
         "//plugin/pkg/scheduler/algorithmprovider:go_default_library",
         "//plugin/pkg/scheduler/api:go_default_library",
         "//plugin/pkg/scheduler/api/latest:go_default_library",
+        "//plugin/pkg/scheduler/apis/schedulerconfig:go_default_library",
+        "//plugin/pkg/scheduler/apis/schedulerconfig/v1alpha1:go_default_library",
         "//plugin/pkg/scheduler/factory:go_default_library",
         "//vendor/github.com/golang/glog:go_default_library",
         "//vendor/github.com/prometheus/client_golang/prometheus:go_default_library",
