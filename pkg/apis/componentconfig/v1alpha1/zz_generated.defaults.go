@@ -28,11 +28,5 @@ import (
 // Public to allow building arbitrary schemes.
 // All generated defaulters are covering - they call all nested defaulters.
 func RegisterDefaults(scheme *runtime.Scheme) error {
-	scheme.AddTypeDefaultingFunc(&KubeSchedulerConfiguration{}, func(obj interface{}) { SetObjectDefaults_KubeSchedulerConfiguration(obj.(*KubeSchedulerConfiguration)) })
 	return nil
-}
-
-func SetObjectDefaults_KubeSchedulerConfiguration(in *KubeSchedulerConfiguration) {
-	SetDefaults_KubeSchedulerConfiguration(in)
-	SetDefaults_LeaderElectionConfiguration(&in.LeaderElection.LeaderElectionConfiguration)
 }
