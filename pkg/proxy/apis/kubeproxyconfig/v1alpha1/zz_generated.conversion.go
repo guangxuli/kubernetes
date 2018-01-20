@@ -86,7 +86,8 @@ func autoConvert_v1alpha1_KubeProxyConfiguration_To_kubeproxyconfig_KubeProxyCon
 	out.EnableProfiling = in.EnableProfiling
 	out.ClusterCIDR = in.ClusterCIDR
 	out.HostnameOverride = in.HostnameOverride
-	if err := Convert_v1alpha1_ClientConnectionConfiguration_To_kubeproxyconfig_ClientConnectionConfiguration(&in.ClientConnection, &out.ClientConnection, s); err != nil {
+	// TODO: Inefficient conversion - can we improve it?
+	if err := s.Convert(&in.ClientConnection, &out.ClientConnection, 0); err != nil {
 		return err
 	}
 	if err := Convert_v1alpha1_KubeProxyIPTablesConfiguration_To_kubeproxyconfig_KubeProxyIPTablesConfiguration(&in.IPTables, &out.IPTables, s); err != nil {
@@ -120,7 +121,8 @@ func autoConvert_kubeproxyconfig_KubeProxyConfiguration_To_v1alpha1_KubeProxyCon
 	out.EnableProfiling = in.EnableProfiling
 	out.ClusterCIDR = in.ClusterCIDR
 	out.HostnameOverride = in.HostnameOverride
-	if err := Convert_kubeproxyconfig_ClientConnectionConfiguration_To_v1alpha1_ClientConnectionConfiguration(&in.ClientConnection, &out.ClientConnection, s); err != nil {
+	// TODO: Inefficient conversion - can we improve it?
+	if err := s.Convert(&in.ClientConnection, &out.ClientConnection, 0); err != nil {
 		return err
 	}
 	if err := Convert_kubeproxyconfig_KubeProxyIPTablesConfiguration_To_v1alpha1_KubeProxyIPTablesConfiguration(&in.IPTables, &out.IPTables, s); err != nil {
