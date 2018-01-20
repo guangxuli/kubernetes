@@ -339,6 +339,8 @@ pkg/scheduler/algorithm/priorities/util
 pkg/scheduler/api
 pkg/scheduler/api/latest
 pkg/scheduler/api/v1
+pkg/scheduler/apis/schedulerconfig
+pkg/scheduler/apis/schedulerconfig/v1alpha1
 pkg/scheduler/core
 pkg/scheduler/factory
 pkg/scheduler/metrics
