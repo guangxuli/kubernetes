@@ -22,6 +22,7 @@ import (
 	"strings"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/kubernetes/pkg/apis/componentconfig"
 )
 
 // ClientConnectionConfiguration contains details for constructing a client.
@@ -126,7 +127,7 @@ type KubeProxyConfiguration struct {
 	HostnameOverride string
 	// clientConnection specifies the kubeconfig file and client connection settings for the proxy
 	// server to use when communicating with the apiserver.
-	ClientConnection ClientConnectionConfiguration
+	ClientConnection componentconfig.ClientConnectionConfiguration
 	// iptables contains iptables-related configuration options.
 	IPTables KubeProxyIPTablesConfiguration
 	// ipvs contains ipvs-related configuration options.

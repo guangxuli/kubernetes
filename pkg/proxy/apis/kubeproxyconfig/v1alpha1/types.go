@@ -18,6 +18,7 @@ package v1alpha1
 
 import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/kubernetes/pkg/apis/componentconfig/v1alpha1"
 )
 
 // ClientConnectionConfiguration contains details for constructing a client.
@@ -122,7 +123,7 @@ type KubeProxyConfiguration struct {
 	HostnameOverride string `json:"hostnameOverride"`
 	// clientConnection specifies the kubeconfig file and client connection settings for the proxy
 	// server to use when communicating with the apiserver.
-	ClientConnection ClientConnectionConfiguration `json:"clientConnection"`
+	ClientConnection v1alpha1.ClientConnectionConfiguration `json:"clientConnection"`
 	// iptables contains iptables-related configuration options.
 	IPTables KubeProxyIPTablesConfiguration `json:"iptables"`
 	// ipvs contains ipvs-related configuration options.
